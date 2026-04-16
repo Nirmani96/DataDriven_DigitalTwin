@@ -22,7 +22,7 @@ db_paths = glob.glob(os.path.join(base_db_dir, "*", "*.mdb"))
 all_los_records = []
 
 forecast_ts = pd.Timestamp(FORECAST_DATE)
-start_ts = forecast_ts - pd.Timedelta(weeks=2)
+start_ts = forecast_ts - pd.Timedelta(weeks=12)
 
 for db_path in db_paths:
     if not os.path.exists(db_path):
@@ -116,4 +116,4 @@ os.makedirs(os.path.dirname(output_path), exist_ok=True)
 with open(output_path,"w") as f:
     json.dump(weekday_gmm_params, f, indent=4)
 
-print(f"Weekday-specific LOS GMM parameters (last 2 weeks) saved to:\n{output_path}")
+print(f"Weekday-specific LOS GMM parameters (last 12 weeks) saved to:\n{output_path}")
