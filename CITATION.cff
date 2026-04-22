@@ -28,6 +28,7 @@ repository-code: "https://github.com/Nirmani96/DataDriven_DigitalTwin"
 license: MIT
 version: "1.0.0"
 date-released: "2026-04-22"
+doi: "https://doi.org/10.5281/zenodo.19700807"
 
 keywords:
   - digital twin
