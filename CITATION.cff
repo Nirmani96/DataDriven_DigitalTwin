@@ -1,0 +1,65 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+
+title: "ED Digital Twin (10-Minute Resolution)"
+abstract: >
+  A database-driven discrete-event digital twin of an Emergency Department,
+  forecasting patient arrivals and discharges over a 12-hour horizon at
+  10-minute resolution. The model fits statistical distributions for
+  length-of-stay and arrival rates from historical visit data, then runs
+  stochastic forward simulations with validation against observed patient flow.
+
+authors:
+  - family-names: "Amarasinghe"
+    given-names: "Nirmani"
+    orcid: "https://orcid.org/0009-0001-9719-6366"
+    affiliation: "Mathematical Science Research Centre, Queen's University Belfast"
+  - family-names: "Boyle"
+    given-names: "Laura"
+    orcid: "https://orcid.org/0000-0001-9651-1363"
+    affiliation: "Mathematical Science Research Centre, Queen's University Belfast"
+  - family-names: "Marshall"
+    given-names: "Adele H."
+    orcid: "https://orcid.org/0000-0001-5306-2756"
+    affiliation: "Mathematical Science Research Centre, Queen's University Belfast"
+
+repository-code: "https://github.com/Nirmani96/DataDriven_DigitalTwin"
+license: MIT
+version: "1.0.0"
+date-released: "2026-04-22"
+
+keywords:
+  - digital twin
+  - emergency department
+  - discrete-event simulation
+  - patient flow
+  - healthcare
+  - stochastic simulation
+  - length of stay
+  - queueing
+
+references:
+  - type: article
+    title: "On patient flow in hospitals: A data-based queueing-science perspective"
+    authors:
+      - family-names: "Armony"
+        given-names: "Mor"
+      - family-names: "Israelit"
+        given-names: "Shlomo"
+      - family-names: "Mandelbaum"
+        given-names: "Avishai"
+      - family-names: "Marmor"
+        given-names: "Yariv N."
+      - family-names: "Tseytlin"
+        given-names: "Yulia"
+      - family-names: "Yom-Tov"
+        given-names: "Galit B."
+    journal: "Stochastic Systems"
+    volume: 5
+    issue: 1
+    start: 146
+    end: 194
+    year: 2015
+    doi: "10.1214/14-SSY153"
+    notes: "Source of the Rambam Hospital ED dataset used to develop and validate this model."
