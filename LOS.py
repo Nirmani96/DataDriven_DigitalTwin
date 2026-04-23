@@ -6,7 +6,7 @@ Length-of-Stay (LOS) Parameter Estimation for the ED Digital Twin.
 
 This script connects to Microsoft Access (.mdb) databases containing
 historical ED visit records, extracts patient length-of-stay data from
-the 2 weeks prior to the forecast date, and fits Gaussian Mixture Models
+the 12 weeks prior to the forecast date, and fits Gaussian Mixture Models
 (GMMs) to the LOS distributions separately for each day of the week.
 
 The fitted GMM parameters are saved as a JSON file which is then read
@@ -70,8 +70,8 @@ db_paths = glob.glob(os.path.join(base_db_dir, "*", "*.mdb"))
 # --------------------------------------------------------------------
 # TIME WINDOW
 # --------------------------------------------------------------------
-# Extract LOS data from the 2 weeks immediately before the forecast
-# date. A 2-week window balances recency (capturing current patterns)
+# Extract LOS data from the 12 weeks immediately before the forecast
+# date. A 12-week window balances recency (capturing current patterns)
 # against having enough data to fit reliable distributions.
 # --------------------------------------------------------------------
 
@@ -85,7 +85,7 @@ start_ts    = forecast_ts - pd.Timedelta(weeks=12)  # 12 weeks lookback window
 # --------------------------------------------------------------------
 # Loop through each .mdb database, connect via ODBC, and extract
 # completed visits (entry_group=1 AND exit_group=1) that started
-# within the 2-week lookback window. Calculate LOS in hours.
+# within the 12-week lookback window. Calculate LOS in hours.
 # --------------------------------------------------------------------
 
 for db_path in db_paths:
@@ -109,7 +109,7 @@ for db_path in db_paths:
             # Drop rows where dates could not be parsed
             df = df.dropna(subset=['entry_date', 'exit_date'])
 
-            # Filter to the 2-week lookback window
+            # Filter to the 12-week lookback window
             df = df[
                 (df['entry_date'] >= start_ts) &
                 (df['entry_date'] <  forecast_ts)
