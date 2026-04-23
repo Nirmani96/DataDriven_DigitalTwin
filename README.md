@@ -178,7 +178,7 @@ If you use this model in your work, please cite it using the information in
 
 Amarasinghe, N., Boyle, L., Marshall, A.H. (2026). 
 ED Digital Twin (10-Minute Resolution) [Software]. 
-Zenodo. DOI: https://doi.org/10.5281/zenodo.19700807
+Zenodo. DOI: 10.5281/zenodo.19700806
 
 ---
 
