@@ -2,7 +2,7 @@
 """
 Digital_Twin_10_minute.py
 --------------------------
-Database-Driven Discrete-Event Digital Twin of an Emergency Department.
+Database-Driven Digital Twin of an Emergency Department.
 
 This is the main simulation script. It builds a stochastic digital twin
 of an ED that forecasts patient arrivals and discharges over a 12-hour
