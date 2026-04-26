@@ -97,7 +97,7 @@ for db_path in db_paths:
             f"DBQ={db_path};"
         )
         with pyodbc.connect(conn_str) as conn:
-            # Only select completed visits (both entry and exit recorded)
+            # Only consider the patients who dischrgaed from ED. entry_group = 1 is enter to ED and exit_group = 1 is discharge from ED
             df = pd.read_sql(
                 "SELECT entry_date, exit_date FROM visits "
                 "WHERE entry_group = 1 AND exit_group = 1;",
