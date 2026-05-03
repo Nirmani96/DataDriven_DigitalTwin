@@ -27,7 +27,7 @@ forecast point.
 The model produces:
 - 10-minute resolution forecasts of arrivals and discharges
 - 95% confidence intervals across 100 replications
-- Validation metrics (MAE, RMSE, MAPE, sMAPE, DTW similarity)
+- Validation metrics (MAE, RMSE, MAPE, DTW similarity)
 - Plots comparing simulated vs actual patient flow
 
 ---
