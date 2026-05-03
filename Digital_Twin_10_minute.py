@@ -90,7 +90,7 @@ from config import FORECAST_DATE
 NUM_RUNS       = 100     # Number of stochastic replications
 FORECAST_HOURS = 12      # Forecast horizon in hours
 ED_PROBABILITY = 0.675   # Probability an arrival enters the ED pathway
-                         # (remaining 32.5% assumed to go elsewhere)
+                        
 
 # 10-minute time resolution
 STEP_MINUTES   = 10
