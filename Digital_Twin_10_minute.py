@@ -14,11 +14,8 @@ KEY DESIGN DECISIONS IN THIS VERSION:
        Multinomial split problem where the median forecast collapses
        to zero for low-arrival slots.
 
-    2. Capacity-based discharge adjustment has been DISABLED. Patient
-       discharge time is determined purely by the sampled LOS, with no
-       adjustment for current census vs capacity thresholds.
-
-    3. For plots and CSVs, the forecast MEAN is used (not median) to
+    
+    2. For plots and CSVs, the forecast MEAN is used (not median) to
        avoid the median=0 collapse problem in low-count slots. The TRUE
        MEDIAN is still used for DTW validation in validation_12h.csv.
 
@@ -33,6 +30,7 @@ HOW IT WORKS:
        - Samples new arrivals independently from the scaled distribution
        - Each arrival joins the ED pathway with probability ED_PROBABILITY
        - Each new ED patient is assigned a LOS sampled from the weekday GMM
+       - Patients whose exceed the capacity assign a new discharge time
        - Patients whose exit time falls in this step are discharged
     4. Validates simulated results against actual observed data
     5. Saves validation metrics, CSVs, and plots
@@ -90,7 +88,7 @@ from config import FORECAST_DATE
 NUM_RUNS       = 100     # Number of stochastic replications
 FORECAST_HOURS = 12      # Forecast horizon in hours
 ED_PROBABILITY = 0.675   # Probability an arrival enters the ED pathway
-                         # (remaining 32.5% assumed to go elsewhere)
+                         
 
 # 10-minute time resolution
 STEP_MINUTES   = 10
@@ -471,10 +469,7 @@ def estimate_capacity():
       - MIN_CAPACITY (25th pct): typical low occupancy
       - MAX_CAPACITY (95th pct): near-peak occupancy
 
-    NOTE: In this version of the model, these bounds are estimated but
-    no longer used to adjust discharge timing (capacity adjustment is
-    disabled — see run_simulation()). They are retained for logging
-    and potential future use.
+   
 
     Returns
     -------
@@ -539,17 +534,16 @@ def run_simulation():
            a. Samples new arrivals independently using scaled distribution
            b. Each arrival joins the ED with probability ED_PROBABILITY
            c. New ED patients are assigned LOS from the weekday GMM
-           d. Patients whose exit time falls in this step are discharged
+           d. Patients whose exceed the capacity assign a new discharge time
+           e. Patients whose exit time falls in this step are discharged
         5. Records arrivals, discharges, and census per step
 
-    CAPACITY ADJUSTMENT — DISABLED IN THIS VERSION:
+    CAPACITY ADJUSTMENT:
         A previous version adjusted discharge timing based on current
         census relative to MIN/MAX capacity:
             census > MAX_CAPACITY → factor = 1.2 (slower discharges)
             census < MIN_CAPACITY → factor = 0.7 (faster discharges)
-        This has been removed so that LOS alone determines discharge
-        timing, making the model simpler and more interpretable.
-        The commented-out code is retained for reference.
+        
 
     Returns
     -------
@@ -578,34 +572,22 @@ def run_simulation():
 
             census = len(patients)
 
-            # ----------------------------------------------------------
-            # CAPACITY-BASED DISCHARGE ADJUSTMENT — DISABLED
-            # ----------------------------------------------------------
-            # Original logic (retained as reference):
-            #
-            # if census > MAX_CAPACITY:
-            #     factor = 1.2    # Overcrowded: discharge takes longer
-            # elif census < MIN_CAPACITY:
-            #     factor = 0.7    # Quiet: patients discharged sooner
-            # else:
-            #     factor = 1.0
-            #
-            # adj_exit = p["exit"] + timedelta(
-            #     minutes=(1 - factor) * 0.5 * 60
-            # )
-            # ----------------------------------------------------------
+            if census > MAX_CAPACITY:
+                factor = 1.2
+            elif census < MIN_CAPACITY:
+                factor = 0.7
+            else:
+                factor = 1.0
 
-            # Process discharges — pure LOS-based, no capacity adjustment
             discharges = 0
             remaining  = []
             for p in patients:
-                adj_exit = p["exit"]   # No capacity adjustment applied
-
-                # Discharge if exit time falls within this 10-min window
+                adj_exit = p["exit"] + timedelta(minutes=(1 - factor) * 0.5 * 60)
                 if now <= adj_exit < now + STEP_TD:
                     discharges += 1
                 else:
                     remaining.append(p)
+
             patients = remaining
 
             rows.append({
