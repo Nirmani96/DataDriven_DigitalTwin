@@ -383,11 +383,6 @@ def mape(p, a):
     return np.mean(np.abs(p[m] - a[m]) / a[m]) * 100 if m.any() else np.nan
 
 
-def smape(p, a):
-    """Symmetric Mean Absolute Percentage Error."""
-    return np.mean(2 * np.abs(p - a) / (np.abs(p) + np.abs(a) + 1e-6)) * 100
-
-
 # ====================================================================
 # PER-REPLICATION SIMULATION AND METRICS
 # ====================================================================
@@ -404,7 +399,6 @@ for rep in range(1, replications + 1):
         "MAE_discharges":    mean_absolute_error(actual_10min, pred),
         "RMSE_discharges":   np.sqrt(mean_squared_error(actual_10min, pred)),
         "MAPE_discharges":   mape(pred, actual_10min),
-        "sMAPE (%)":         smape(pred, actual_10min),
         "Aggregate_PE (%)":  (
             abs(pred.sum() - actual_10min.sum()) / actual_10min.sum() * 100
             if actual_10min.sum() > 0 else np.nan
