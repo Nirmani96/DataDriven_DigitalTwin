@@ -40,6 +40,7 @@ AUTHORS:
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 import matplotlib.pyplot as plt
 from scipy.stats import shapiro, ttest_rel, wilcoxon
 
@@ -50,11 +51,16 @@ from scipy.stats import shapiro, ttest_rel, wilcoxon
 # ====================================================================
 
 des = pd.read_csv("discharge_2007-10-06_00-00.csv")
-dt  = pd.read_csv(
-    "C:/PhD/Pilot/ed_digital_twin/data/output/"
-    "2007-10-06_00-00-00/dt_fixed_validation_per_replication_10min.csv"
+base_dir = os.path.dirname(__file__)  # script location
+file_path = os.path.join(
+    base_dir,
+    "data",
+    "output",
+    "2007-09-30_12-00-00",
+    "dt_fixed_validation_per_replication_10min.csv"
 )
 
+dt = pd.read_csv(file_path)
 # Metrics to compare — discharges only in this script
 metrics = ["MAE_discharges", "RMSE_discharges", "MAPE_discharges"]
 
