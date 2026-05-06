@@ -46,6 +46,7 @@ AUTHORS:
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 import matplotlib.pyplot as plt
 from scipy.stats import shapiro, ttest_rel, wilcoxon
 
@@ -56,10 +57,16 @@ from scipy.stats import shapiro, ttest_rel, wilcoxon
 # Update these paths to match the forecast timestamp you want to compare.
 # ====================================================================
 
-dt  = pd.read_csv(
-    "C:/PhD/Pilot/ed_digital_twin/data/output/"
-    "2007-09-30_12-00-00/dt_fixed_validation_per_replication_10min.csv"
+base_dir = os.path.dirname(__file__)  # script location
+file_path = os.path.join(
+    base_dir,
+    "data",
+    "output",
+    "2007-09-30_12-00-00",
+    "dt_fixed_validation_per_replication_10min.csv"
 )
+
+dt = pd.read_csv(file_path)
 des = pd.read_csv("arrivals_2007-09-30_12-00.csv")
 
 # Metrics to compare — arrivals only in this script
