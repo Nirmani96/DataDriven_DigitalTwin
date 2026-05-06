@@ -273,7 +273,7 @@ The data used is not included in this repository. Please refer to the
 If you use this model in your work, please cite it using the information in
 [CITATION.cff](CITATION.cff). You can also cite the archived version on Zenodo:
 
-> Amarasinghe, N., Boyle, L., & Marshall, A. H. (2026). *ED Digital Twin (10-Minute Resolution)* [Software]. Zenodo. DOI: [10.5281/zenodo.19700806]
+> Amarasinghe, N., Boyle, L., & Marshall, A. H. (2026). *ED Digital Twin (10-Minute Resolution)* [Software]. Zenodo. DOI: https://doi.org/10.5281/zenodo.19700806
 
 ---
 
