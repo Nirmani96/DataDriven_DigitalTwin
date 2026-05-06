@@ -346,14 +346,6 @@ def mape(p, a):
     return np.mean(np.abs(p[m] - a[m]) / a[m]) * 100 if m.any() else np.nan
 
 
-def smape(p, a):
-    """
-    Symmetric Mean Absolute Percentage Error.
-    More robust than MAPE when actual values are near zero.
-    Formula: (1/n) * Σ 2|F-A| / (|F|+|A|) * 100
-    """
-    return np.mean(2 * np.abs(p - a) / (np.abs(p) + np.abs(a) + 1e-6)) * 100
-
 
 # ====================================================================
 # PRELIMINARY RUN — AGGREGATE METRICS ONLY
@@ -377,7 +369,6 @@ print("\n=== 10-MIN METRICS ===")
 print("MAE:",  mean_absolute_error(actual_10min, pred_mean))
 print("RMSE:", np.sqrt(mean_squared_error(actual_10min, pred_mean)))
 print("MAPE:", mape(pred_mean, actual_10min))
-print("sMAPE:", smape(pred_mean, actual_10min))
 
 # Aggregate 10-min predictions to hourly for hourly metric reporting
 pred_hourly = pred_mean.reshape(FORECAST_HOURS, STEPS_PER_HOUR).sum(axis=1)
@@ -444,7 +435,6 @@ for rep in range(1, replications + 1):
         "MAE_arrivals":     mean_absolute_error(actual_10min, pred),
         "RMSE_arrivals":    np.sqrt(mean_squared_error(actual_10min, pred)),
         "MAPE_arrivals":    mape(pred, actual_10min),
-        "sMAPE (%)":        smape(pred, actual_10min),
         "Aggregate_PE (%)": agg_pe
     })
 
