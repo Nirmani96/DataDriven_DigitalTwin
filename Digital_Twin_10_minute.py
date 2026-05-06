@@ -90,7 +90,7 @@ from config import FORECAST_DATE
 NUM_RUNS       = 100     # Number of stochastic replications
 FORECAST_HOURS = 12      # Forecast horizon in hours
 ED_PROBABILITY = 0.675   # Probability an arrival enters the ED pathway
-                         # (remaining 32.5% assumed to go elsewhere)
+                        
 
 # 10-minute time resolution
 STEP_MINUTES   = 10
@@ -686,19 +686,6 @@ def mape_step(forecast, actual):
     return np.mean(np.abs(f[mask] - a[mask]) / a[mask]) * 100
 
 
-def smape(forecast, actual):
-    """
-    Symmetric Mean Absolute Percentage Error.
-    More balanced than MAPE when actual values are close to zero.
-    Formula: (1/n) * Σ 2*|F-A| / (|F|+|A|) * 100
-    """
-    f = np.array(forecast, dtype=float)
-    a = np.array(actual,   dtype=float)
-    return np.mean(
-        2 * np.abs(f - a) / (np.abs(f) + np.abs(a) + 1e-6)
-    ) * 100
-
-
 def dtw_similarity(v1, v2, clip_percentile=95):
     """
     Dynamic Time Warping (DTW) similarity score in [0, 1].
@@ -1005,7 +992,6 @@ if __name__ == "__main__":
     #   MAE        — Mean Absolute Error (per 10-min step)
     #   RMSE       — Root Mean Squared Error (per 10-min step)
     #   MAPE       — Step-level Mean Absolute Percentage Error (%)
-    #   sMAPE      — Symmetric MAPE (%)
     #   Aggregate_PE — Total count error over full 12h window (%)
     #   DTW        — Dynamic Time Warping similarity [0, 1]
     # ------------------------------------------------------------------
@@ -1029,8 +1015,6 @@ if __name__ == "__main__":
             "RMSE_discharges":            rmse(forecast_dis, actual_dis),
             "MAPE_arrivals":              mape_step(forecast_arr, actual_arr),
             "MAPE_discharges":            mape_step(forecast_dis, actual_dis),
-            "sMAPE_arrivals":             smape(forecast_arr, actual_arr),
-            "sMAPE_discharges":           smape(forecast_dis, actual_dis),
             "Aggregate_PE_arrivals":      mape_aggregate(
                                               forecast_arr.sum(),
                                               actual_arr.sum()),
@@ -1059,7 +1043,6 @@ if __name__ == "__main__":
         "MAE_arrivals", "MAE_discharges",
         "RMSE_arrivals", "RMSE_discharges",
         "MAPE_arrivals", "MAPE_discharges",
-        "sMAPE_arrivals", "sMAPE_discharges",
         "Aggregate_PE_arrivals", "Aggregate_PE_discharges",
         "DTW_arrivals", "DTW_discharges",
     ]:
